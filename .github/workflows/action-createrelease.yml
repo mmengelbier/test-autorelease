@@ -28,11 +28,11 @@ jobs:
 
       - name: Set up environment
         run: |
-          apt-get install jq zip -y
+          apt-get install jq zip curl -y
           mv src /src
           chmod u+rx-w /src/.scripts/sas-createrelease.sh
       - name: Run create release script
         run: |
-          /src/.scripts/sas-createrelease.sh macros
+          /src/.scripts/sas-createrelease.sh macros tests
           
 
