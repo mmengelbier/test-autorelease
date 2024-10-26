@@ -72,7 +72,7 @@ RELEASE_UPLOAD_URL="${RELEASE_UPLOAD_URL%\{*}"
 
 echo "-- add release assets"
 
-for XFILE in "$(ls /archives)"; do
+for XFILE in $(ls /archives); do
 
    echo "   adding file ${XFILE}"
 
