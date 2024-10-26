@@ -9,8 +9,10 @@ on:
 jobs:
   make_release:
     runs-on: ubuntu-latest
+
     env:
       ACTION_TOKEN: ${{ github.token }}
+
     steps:
 
       - name: Check out the repo
