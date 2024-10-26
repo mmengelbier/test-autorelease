@@ -23,7 +23,13 @@ echo "${RELEASE_STRING}"
 
 
 # -- identify folders to include
-find /src -maxdepth 2 -type d -not -name '.*'
+cd /src
+
+gzip -r ../${RELEASE_STRING}.zip $(ls)
+
+ls -alF /
+
+
 
 
 
