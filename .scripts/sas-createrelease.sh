@@ -14,3 +14,6 @@ echo "Processing commit ${GITHUB_SHA}"
 
 # -- identify reference
 echo "Reference ${GITHUB_REF}"
+
+
+env
