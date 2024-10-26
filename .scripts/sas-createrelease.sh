@@ -6,8 +6,6 @@
 #
 #
 
-echo $@
-
 # -- identify commiit
 echo "Processing commit ${GITHUB_SHA}"
 
@@ -15,25 +13,34 @@ echo "Processing commit ${GITHUB_SHA}"
 # -- identify reference
 echo "Reference ${GITHUB_REF}"
 
-
-# -- generate release label 
-RELEASE_CODE_ZIP=${GITHUB_REF_NAME}.zip
-RELEASE_SHORT_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v ).zip
-RELEASE_LONG_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v )-${GITHUB_SHA}.zip
+# -- generate release labels 
+RELEASE_SHORT_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v )
+RELEASE_LONG_LABEL=${RELEASE_SHORT_LABEL}-${GITHUB_SHA}
 
 
-# -- create archive
+
+# -- scaffolding
+mkdir /archives
+
+# -- change working directory
 cd /src
 
-echo "-- create archive ${RELEASE_LONG_LABEL}"
-zip -r /${RELEASE_LONG_LABEL} $@
 
-echo "-- create archive ${RELEASE_SHORT_LABEL}"
-cp /${RELEASE_LONG_LABEL} /${RELEASE_SHORT_LABEL}
+# -- create Zip archive
 
-cp /${RELEASE_LONG_LABEL} /${RELEASE_CODE_ZIP}
+echo "-- create Zip archive ${RELEASE_LONG_LABEL}"
+zip -r /archives/${RELEASE_LONG_LABEL}.zip $@
 
-ls -alF /
+
+echo "-- create tar.gz archive ${RELEASE_LONG_LABEL}"
+tar -cf /archives/${RELEASE_LONG_LABEL}.tar $@
+gzip /archives/${RELEASE_LONG_LABEL}.tar
+
+echo "-- create archives for ${RELEASE_SHORT_LABEL}"
+cp /archives/${RELEASE_LONG_LABEL}.zip /archives/${RELEASE_SHORT_LABEL}.zip
+
+
+ls -alF /archive
 
 
 # -- create release as draft
@@ -69,9 +76,6 @@ curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: 
         --data-binary @/${RELEASE_LONG_LABEL}  \
         $RELEASE_UPLOAD_URL?name=${RELEASE_LONG_LABEL}
 
-curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
-        --data-binary @/${RELEASE_CODE_ZIP}  \
-        $RELEASE_UPLOAD_URL?name=${RELEASE_CODE_ZIP}&label=Source%20code%20%28zip%29
 
 # -- set release as final
 curl -sS -L -X PATCH -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
