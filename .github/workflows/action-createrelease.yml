@@ -33,6 +33,6 @@ jobs:
           chmod u+rx-w /src/.scripts/sas-createrelease.sh
       - name: Run create release script
         run: |
-          /src/.scripts/sas-createrelease.sh
+          /src/.scripts/sas-createrelease.sh macros
           
 

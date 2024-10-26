@@ -6,7 +6,7 @@
 #
 #
 
-
+echo ${0}
 
 # -- identify commiit
 echo "Processing commit ${GITHUB_SHA}"
@@ -26,6 +26,8 @@ echo "${RELEASE_STRING}"
 cd /src
 
 zip -r ../${RELEASE_STRING}.zip $(ls)
+
+cp ../${RELEASE_STRING}.zip ../${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v ).zip
 
 ls -alF /
 
