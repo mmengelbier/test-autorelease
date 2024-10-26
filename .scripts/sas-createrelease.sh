@@ -44,6 +44,8 @@ RELEASE_CREATE=$( curl -sS -L -X POST -H "Accept: application/vnd.github+json" -
                        ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases \
                       -d "{\"tag_name\":\"${GITHUB_REF_NAME}\", \"name\":\"${GITHUB_REF_NAME}\", \"body\":\"Description of the release\",\"draft\":true, \"prerelease\":false, \"generate_release_notes\":false}" )
 
+echo "${RELEASE_CREATE}"
+
 
 RELEASE_ID=$( echo ${RELEASE_CREATE} | jq -r .id )
 
@@ -51,13 +53,9 @@ echo "${RELEASE_ID}"
 
 # -- add assets
 
-# - remove existing assets
-echo "-- get default assets"
-
-DEFAULT_ASSETS=$( curl -sS -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
-                  ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}/assets )
-
-echo "${DEFAULT_ASSETS}"
+#curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer <YOUR-TOKEN>" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
+#     "https://uploads.github.com/repos/OWNER/REPO/releases/RELEASE_ID/assets?name=example.zip" \
+#     --data-binary "@example.zip"
 
 
 # -- set release as final
