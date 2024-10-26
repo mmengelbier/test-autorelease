@@ -16,4 +16,7 @@ echo "Processing commit ${GITHUB_SHA}"
 echo "Reference ${GITHUB_REF}"
 
 
-env
+# -- generate release label 
+RELEASE_STRING="${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v )-${GITHUB_SHA}"
+
+echo "${RELEASE_STRING}"
