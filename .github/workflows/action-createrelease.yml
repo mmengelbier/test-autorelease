@@ -30,7 +30,6 @@ jobs:
         run: |
           apt-get install jq -y
           mv src /src
-          ls -alF /src
           chmod u+rx-w /src/.scripts/sas-createrelease.sh
       - name: Run create release script
         run: |
