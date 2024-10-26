@@ -36,6 +36,15 @@ ls -alF /
 # -- create release as draft
 
 #DRAFT_RELEAE=$()
+
+curl -L \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer ${ACTION_TOKEN}" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/${GITHUB_REPOSITORY}/releases
+
+echo "-----------------"
+
 curl -sS -L \
                     -X POST \
                     -H "Accept: application/vnd.github+json" \
