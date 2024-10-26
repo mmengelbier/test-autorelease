@@ -45,7 +45,9 @@ RELEASE_CREATE=$( curl -sS -L -X POST -H "Accept: application/vnd.github+json" -
                       -d "{\"tag_name\":\"${GITHUB_REF_NAME}\", \"name\":\"${GITHUB_REF_NAME}\", \"body\":\"Description of the release\",\"draft\":true, \"prerelease\":false, \"generate_release_notes\":false}" )
 
 
-RELEASE_ID=$( echo ${RELEASE_CREATE} | jq .id )
+RELEASE_ID=$( echo ${RELEASE_CREATE} | jq -r .id )
+
+echo "${RELEASE_ID}"
 
 # -- add assets
 
