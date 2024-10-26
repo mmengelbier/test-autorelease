@@ -54,10 +54,12 @@ curl -sS -L \
                     -H "Authorization: Bearer ${ACTION_TOKEN}" \
                     -H "X-GitHub-Api-Version: 2022-11-28" \
                     ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases \
-                      -d '{"tag_name":"${GITHUB_REF_NAME}","target_commitish":"${GITHUB_SHA}","name":"${GITHUB_REF_NAME}","body":"Description of the release","draft":true,"prerelease":false,"generate_release_notes":false}'
-
-
-echo "${DRAFT_RELEASE}"
+                      -d '{"tag_name":"${GITHUB_REF_NAME}",\
+                           "name":"${GITHUB_REF_NAME}",\
+                           "body":"Description of the release",\
+                           "draft":true, \
+                           "prerelease":false, \
+                           "generate_release_notes":false}'
 
 
 

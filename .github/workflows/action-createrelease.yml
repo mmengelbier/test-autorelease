@@ -10,6 +10,9 @@ jobs:
   make_release:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     container:
       image: openapx/baseline-os:latest-ubuntu
       credentials:
