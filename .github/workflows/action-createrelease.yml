@@ -24,11 +24,12 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
         with:
-          path: /src
+          path: src
 
       - name: Set up environment
         run: |
           apt-get install jq -y
+          mv src /src
           ls -alF /src
           chmod u+rx-w /src/.scripts/sas-createrelease.sh
       - name: Run create release script
