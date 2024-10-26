@@ -10,8 +10,13 @@ jobs:
   make_release:
     runs-on: ubuntu-latest
 
-    env:
-      ACTION_TOKEN: ${{ github.token }}
+    container:
+      image: openapx/baseline-os:latest-ubuntu
+      credentials:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+      env:
+        ACTION_TOKEN: ${{ github.token }}
 
     steps:
 
