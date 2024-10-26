@@ -58,7 +58,7 @@ RELEASE_UPLOAD_URL="${RELEASE_UPLOAD_URL%\{*}"
 
 # -- add assets
 
-curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
+curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
         --data-binary @/${RELEASE_SHORT_LABEL}  \
         $RELEASE_UPLOAD_URL?name=${RELEASE_SHORT_LABEL}
 
