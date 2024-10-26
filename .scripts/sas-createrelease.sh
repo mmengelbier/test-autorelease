@@ -25,7 +25,7 @@ RELEASE_LONG_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v )-${GI
 cd /src
 
 echo "-- create archive ${RELEASE_LONG_LABEL}"
-zip -r /${RELEASE_LONG_LABEL} -x '.keep' $@
+zip -r /${RELEASE_LONG_LABEL} $@
 
 echo "-- create archive ${RELEASE_SHORT_LABEL}"
 cp /${RELEASE_LONG_LABEL} /${RELEASE_SHORT_LABEL}
