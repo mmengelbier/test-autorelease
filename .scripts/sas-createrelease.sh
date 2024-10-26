@@ -42,7 +42,7 @@ echo "curl -sS -L -X POST -H \"Accept: application/vnd.github+json\" -H \"Author
 
 RELEASE_CREATE=$( curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
                        ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases \
-                      -d "{\"tag_name\":\"${GITHUB_REF_NAME}\", \"name\":\"${GITHUB_REF_NAME}\", \"body\":\"Description of the release\",\"draft\":true, \"prerelease\":false, \"generate_release_notes\":false}" )
+                      -d "{\"tag_name\":\"${GITHUB_REF_NAME}\", \"name\":\"${GITHUB_REF_NAME}\", \"body\":\"Description of the release\",\"draft\":true, \"prerelease\":true, \"generate_release_notes\":false}" )
 
 
 # -- identify release ID
@@ -62,13 +62,15 @@ curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: 
         --data-binary @/${RELEASE_SHORT_LABEL}  \
         $RELEASE_UPLOAD_URL?name=${RELEASE_SHORT_LABEL}
 
-#curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer <YOUR-TOKEN>" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
-#     "https://uploads.github.com/repos/OWNER/REPO/releases/RELEASE_ID/assets?name=example.zip" \
-#     --data-binary "@example.zip"
+curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
+        --data-binary @/${RELEASE_LONG_LABEL}  \
+        $RELEASE_UPLOAD_URL?name=${RELEASE_LONG_LABEL}
 
 
 # -- set release as final
-
+curl -sS -L -X PATCH -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
+                       ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID} \
+                      -d "{\"draft\":false, \"prerelease\":false, \"make_latest\":true}" 
 
 
 
