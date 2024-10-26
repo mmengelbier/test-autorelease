@@ -18,17 +18,17 @@ echo "Reference ${GITHUB_REF}"
 
 # -- generate release label 
 RELEASE_SHORT_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v ).zip
-RELEASE_LONG_LABEL=${RELEASE_SHORT_LABEL}-${GITHUB_SHA}.zip
+RELEASE_LONG_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v )-${GITHUB_SHA}.zip
 
 
 # -- create archive
 cd /src
 
 echo "-- create archive ${RELEASE_LONG_LABEL}"
-zip -r ../${RELEASE_LONG_LABEL} -x '.keep' $@
+zip -r /${RELEASE_LONG_LABEL} -x '.keep' $@
 
 echo "-- create archive ${RELEASE_SHORT_LABEL}"
-cp ../${RELEASE_LONG_LABEL} ../${RELEASE_SHORT_LABEL}
+cp /${RELEASE_LONG_LABEL} /${RELEASE_SHORT_LABEL}
 
 ls -alF /
 
@@ -59,7 +59,7 @@ RELEASE_UPLOAD_URL="${RELEASE_UPLOAD_URL%\{*}"
 # -- add assets
 
 curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
-        --data-binary @../${RELEASE_SHORT_LABEL}  \
+        --data-binary @/${RELEASE_SHORT_LABEL}  \
         $RELEASE_UPLOAD_URL?name=${RELEASE_SHORT_LABEL}
 
 #curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer <YOUR-TOKEN>" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
