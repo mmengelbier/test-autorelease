@@ -17,6 +17,7 @@ echo "Reference ${GITHUB_REF}"
 
 
 # -- generate release label 
+RELEASE_CODE_ZIP=${GITHUB_REF_NAME}.zip
 RELEASE_SHORT_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v ).zip
 RELEASE_LONG_LABEL=${VARS_COMPONENT}_$( echo ${GITHUB_REF_NAME} | tr -d v )-${GITHUB_SHA}.zip
 
@@ -29,6 +30,8 @@ zip -r /${RELEASE_LONG_LABEL} $@
 
 echo "-- create archive ${RELEASE_SHORT_LABEL}"
 cp /${RELEASE_LONG_LABEL} /${RELEASE_SHORT_LABEL}
+
+cp /${RELEASE_LONG_LABEL} /${RELEASE_CODE_ZIP}
 
 ls -alF /
 
@@ -66,6 +69,9 @@ curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: 
         --data-binary @/${RELEASE_LONG_LABEL}  \
         $RELEASE_UPLOAD_URL?name=${RELEASE_LONG_LABEL}
 
+curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
+        --data-binary @/${RELEASE_CODE_ZIP}  \
+        $RELEASE_UPLOAD_URL?name=${RELEASE_CODE_ZIP}&label=Source%20code%20%28zip%29
 
 # -- set release as final
 curl -sS -L -X PATCH -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
