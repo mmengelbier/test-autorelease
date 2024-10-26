@@ -17,6 +17,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
       env:
         ACTION_TOKEN: ${{ github.token }}
+        VARS_COMPONENT: ${{ vars.COMPONENT }}
 
     steps:
 
