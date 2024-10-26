@@ -36,8 +36,10 @@ echo "-- create tar.gz archive ${RELEASE_LONG_LABEL}"
 tar -cf /archives/${RELEASE_LONG_LABEL}.tar $@
 gzip /archives/${RELEASE_LONG_LABEL}.tar
 
+
 echo "-- create archives for ${RELEASE_SHORT_LABEL}"
 cp /archives/${RELEASE_LONG_LABEL}.zip /archives/${RELEASE_SHORT_LABEL}.zip
+cp /archives/${RELEASE_LONG_LABEL}.tar.gz /archives/${RELEASE_SHORT_LABEL}.tar.gz
 
 
 ls -alF /archives
@@ -68,13 +70,23 @@ RELEASE_UPLOAD_URL="${RELEASE_UPLOAD_URL%\{*}"
 
 # -- add assets
 
-curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
-        --data-binary @/${RELEASE_SHORT_LABEL}  \
-        $RELEASE_UPLOAD_URL?name=${RELEASE_SHORT_LABEL}
+echo "-- add release assets"
 
-curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
-        --data-binary @/${RELEASE_LONG_LABEL}  \
-        $RELEASE_UPLOAD_URL?name=${RELEASE_LONG_LABEL}
+for XFILE in "$(ls /archives)"; do
+
+   echo "   adding file ${XFILE}"
+
+   curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
+           --data-binary @/archives/${XFILE}  \
+           $RELEASE_UPLOAD_URL?name=${XFILE}
+
+done
+
+
+
+#curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
+#        --data-binary @/${RELEASE_LONG_LABEL}  \
+#        $RELEASE_UPLOAD_URL?name=${RELEASE_LONG_LABEL}
 
 
 # -- set release as final
