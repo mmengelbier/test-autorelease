@@ -6,7 +6,7 @@
 #
 #
 
-echo ${0}
+echo $@
 
 # -- identify commiit
 echo "Processing commit ${GITHUB_SHA}"
