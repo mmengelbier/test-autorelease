@@ -25,7 +25,7 @@ echo "${RELEASE_STRING}"
 # -- identify folders to include
 cd /src
 
-gzip -r ../${RELEASE_STRING}.zip $(ls)
+zip -r ../${RELEASE_STRING}.zip $(ls)
 
 ls -alF /
 
