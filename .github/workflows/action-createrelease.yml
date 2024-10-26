@@ -26,6 +26,7 @@ jobs:
       - name: Set up environment
         run: |
           apt-get install jq -y
+          chmod u+rx-w .scripts/sas-createrelease.sh
       - name: Run create release script
         run: |
           .scripts/sas-createrelease.sh
