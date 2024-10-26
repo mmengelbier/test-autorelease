@@ -53,7 +53,7 @@ RELEASE_ID=$( echo ${RELEASE_CREATE} | jq .id )
 echo "-- get default assets"
 
 DEFAULT_ASSETS=$( curl -sS -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
-                  ${GITHUB_API_URL}/repos/OWNER/REPO/releases/RELEASE_ID/assets )
+                  ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}/assets )
 
 echo "${DEFAULT_ASSETS}"
 
