@@ -55,7 +55,7 @@ RELEASE_CREATE=$( curl -sS -L -X POST -H "Accept: application/vnd.github+json" -
 
 RELEASE_ID=$( echo ${RELEASE_CREATE} | jq .id )
 
-echo "${RELEASE_ID}
+echo "${RELEASE_ID}"
 
 
 
