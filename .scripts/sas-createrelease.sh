@@ -40,7 +40,7 @@ echo "-- create archives for ${RELEASE_SHORT_LABEL}"
 cp /archives/${RELEASE_LONG_LABEL}.zip /archives/${RELEASE_SHORT_LABEL}.zip
 
 
-ls -alF /archive
+ls -alF /archives
 
 
 # -- create release as draft
