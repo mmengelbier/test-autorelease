@@ -23,8 +23,8 @@ jobs:
 
       - name: Check out the repo
         uses: actions/checkout@v4
-          with:
-            path: /src
+        with:
+          path: /src
 
       - name: Set up environment
         run: |
