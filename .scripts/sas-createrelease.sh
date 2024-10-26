@@ -20,41 +20,36 @@ RELEASE_LONG_LABEL=${RELEASE_SHORT_LABEL}-${GITHUB_SHA}
 
 
 # -- scaffolding
-mkdir /archives
+mkdir /assets
 
 # -- change working directory
 cd /src
 
 
-# -- create Zip archive
+# -- create assets
 
-echo "-- create Zip archive ${RELEASE_LONG_LABEL}"
-zip -r /archives/${RELEASE_LONG_LABEL}.zip $@
-
-
-echo "-- create tar.gz archive ${RELEASE_LONG_LABEL}"
-tar -cf /archives/${RELEASE_LONG_LABEL}.tar $@
-gzip /archives/${RELEASE_LONG_LABEL}.tar
+echo "-- create Zip asset ${RELEASE_LONG_LABEL}"
+zip -r /assets/${RELEASE_LONG_LABEL}.zip $@
 
 
-echo "-- create archives for ${RELEASE_SHORT_LABEL}"
-cp /archives/${RELEASE_LONG_LABEL}.zip /archives/${RELEASE_SHORT_LABEL}.zip
-cp /archives/${RELEASE_LONG_LABEL}.tar.gz /archives/${RELEASE_SHORT_LABEL}.tar.gz
+echo "-- create tar.gz asset ${RELEASE_LONG_LABEL}"
+tar -cf /assets/${RELEASE_LONG_LABEL}.tar $@
+gzip /assets/${RELEASE_LONG_LABEL}.tar
 
 
-ls -alF /archives
+echo "-- create assets for ${RELEASE_SHORT_LABEL}"
+cp /assets/${RELEASE_LONG_LABEL}.zip /assets/${RELEASE_SHORT_LABEL}.zip
+cp /assets/${RELEASE_LONG_LABEL}.tar.gz /assets/${RELEASE_SHORT_LABEL}.tar.gz
+
 
 
 # -- create release as draft
 
 echo "-- create draft release"
 
-echo "curl -sS -L -X POST -H \"Accept: application/vnd.github+json\" -H \"Authorization: Bearer ${ACTION_TOKEN}\" -H \"X-GitHub-Api-Version: 2022-11-28\" ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases -d '{\"tag_name\":\"${GITHUB_REF_NAME}\",\"target_commitish\":\"${GITHUB_SHA}\",\"name\":\"${GITHUB_REF_NAME}\",\"body\":\"Description of the release\",\"draft\":true,\"prerelease\":false,\"generate_release_notes\":false}'"
-
-
 RELEASE_CREATE=$( curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" \
                        ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases \
-                      -d "{\"tag_name\":\"${GITHUB_REF_NAME}\", \"name\":\"${GITHUB_REF_NAME}\", \"body\":\"Description of the release\",\"draft\":true, \"prerelease\":true, \"generate_release_notes\":false}" )
+                      -d "{\"tag_name\":\"${GITHUB_REF_NAME}\", \"name\":\"${GITHUB_REF_NAME}\", \"body\":\"Release for ${VARS_COMPONENT} version $( echo ${GITHUB_REF_NAME} | tr -d v )\",\"draft\":true, \"prerelease\":true, \"generate_release_notes\":false}" )
 
 
 # -- identify release ID
@@ -72,12 +67,12 @@ RELEASE_UPLOAD_URL="${RELEASE_UPLOAD_URL%\{*}"
 
 echo "-- add release assets"
 
-for XFILE in $(ls /archives); do
+for XFILE in $(ls /assets); do
 
    echo "   adding file ${XFILE}"
 
    curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/octet-stream" \
-           --data-binary @/archives/${XFILE}  \
+           --data-binary @/assets/${XFILE}  \
            $RELEASE_UPLOAD_URL?name=${XFILE}
 
 done
