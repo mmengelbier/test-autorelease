@@ -36,7 +36,7 @@ ls -alF /
 # -- create release as draft
 
 
-echo "curl -sS -L -X POST -H \"Accept: application/vnd.github+json\" -H \"Authorization: Bearer ${ACTION_TOKEN}\" -H \"X-GitHub-Api-Version: 2022-11-28\" ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases -d '{\"tag_name\":\"${GITHUB_REF}\",\"target_commitish\":\"${GITHUB_SHA}\",\"name\":\"${GITHUB_REF}\",\"body\":\"Description of the release\",\"draft\":true,\"prerelease\":false,\"generate_release_notes\":false}'"
+echo "curl -sS -L -X POST -H \"Accept: application/vnd.github+json\" -H \"Authorization: Bearer ${ACTION_TOKEN}\" -H \"X-GitHub-Api-Version: 2022-11-28\" ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases -d '{\"tag_name\":\"${GITHUB_REF_NAME}\",\"target_commitish\":\"${GITHUB_SHA}\",\"name\":\"${GITHUB_REF_NAME}\",\"body\":\"Description of the release\",\"draft\":true,\"prerelease\":false,\"generate_release_notes\":false}'"
 
 #DRAFT_RELEAE=$()
 
@@ -54,7 +54,7 @@ curl -sS -L \
                     -H "Authorization: Bearer ${ACTION_TOKEN}" \
                     -H "X-GitHub-Api-Version: 2022-11-28" \
                     ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases \
-                      -d '{"tag_name":"${GITHUB_REF}","target_commitish":"${GITHUB_SHA}","name":"${GITHUB_REF}","body":"Description of the release","draft":true,"prerelease":false,"generate_release_notes":false}'
+                      -d '{"tag_name":"${GITHUB_REF_NAME}","target_commitish":"${GITHUB_SHA}","name":"${GITHUB_REF_NAME}","body":"Description of the release","draft":true,"prerelease":false,"generate_release_notes":false}'
 
 
 echo "${DRAFT_RELEASE}"
