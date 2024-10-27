@@ -20,7 +20,6 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
       env:
         ACTION_TOKEN: ${{ github.token }}
-        VARS_COMPONENT: ${{ vars.COMPONENT }}
 
     steps:
 
@@ -33,9 +32,13 @@ jobs:
         run: |
           apt-get install jq zip curl -y
           mv src /src
-          chmod u+rx-w /src/.scripts/sas-createrelease.sh
-      - name: Run create release script
-        run: |
-          /src/.scripts/sas-createrelease.sh macros tests
+          chmod u+rx-w /src/.scripts/*.sh
+          mkdir /assets
+
+      - name: Build SAS macro archive
+        run: /src/.scripts/sas-build.sh macros tests
+
+      - name: Create release 
+        run: /src/.scripts/createrelease.sh ${{ vars.COMPONENT }}
           
 
