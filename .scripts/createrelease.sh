@@ -36,6 +36,8 @@ RELEASE=$( curl -sS -L -X POST -H "Accept: application/vnd.github+json" -H "Auth
                 ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases \
                -d "{\"tag_name\":\"${GITHUB_REF_NAME}\", \"name\":\"${GITHUB_REF_NAME}\", \"body\":\"Release for ${COMPONENT} version ${VERSION}\",\"draft\":true, \"prerelease\":true, \"generate_release_notes\":false}" )
 
+echo "--->${RELEASE}<---"
+
 
 # -- identify release ID
 RELEASE_ID=$( echo ${RELEASE} | jq -r .id )
