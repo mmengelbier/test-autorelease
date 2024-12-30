@@ -30,6 +30,8 @@ jobs:
 
       - name: Set up environment
         run: |
+          apt reinstall ca-certificates
+          update-ca-certificates
           apt-get install jq zip curl -y
           mv src /src
           chmod u+rx-w /src/.scripts/*.sh
