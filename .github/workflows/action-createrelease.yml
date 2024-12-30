@@ -38,9 +38,9 @@ jobs:
       - name: Build SAS macro archive
         env:
           VARS_COMPONENT: ${{ vars.COMPONENT }}
-        run: /src/.scripts/sas-build.sh macros tests
+        run: /src/.scripts/sas-build.sh macros examples
 
       - name: Create release 
-        run: /src/.scripts/createrelease.sh ${{ vars.COMPONENT }}
+        run: /src/.scripts/createrelease.sh cxtf
           
 
